@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://dix180w2w1w2w"]
+
+[ext_resource type="Script" path="res://scripts/player/angle_controller.gd" id="1_vj1vj"]
+
+[node name="PlayerAngle" type="CharacterBody2D"]
+script = ExtResource("1_vj1vj")
+
+[node name="VertexZero" type="Node2D" parent="."]
+
+[node name="Sprite" type="Polygon2D" parent="VertexZero"]
+color = Color(0, 1, 1, 1)
+polygon = PackedVector2Array(-5, -5, 5, -5, 5, 5, -5, 5)
+
+[node name="VertexEcho" type="Node2D" parent="."]
+
+[node name="Sprite" type="Polygon2D" parent="VertexEcho"]
+color = Color(1, 0, 1, 1)
+polygon = PackedVector2Array(-5, -5, 5, -5, 5, 5, -5, 5)
+
+[node name="VertexAxiom" type="Node2D" parent="."]
+
+[node name="Sprite" type="Polygon2D" parent="VertexAxiom"]
+color = Color(1, 1, 0, 1)
+polygon = PackedVector2Array(-5, -5, 5, -5, 5, 5, -5, 5)
+
+[node name="ArmVisual1" type="Line2D" parent="."]
+width = 3.0
+
+[node name="ArmVisual2" type="Line2D" parent="."]
+width = 3.0
+
+[node name="Trail" type="Line2D" parent="."]

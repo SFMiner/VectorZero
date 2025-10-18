@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cda82kl6sf1jq"]
+
+[ext_resource type="Script" uid="uid://b3doqybyclscp" path="res://scenes/test/movement_test_builder.gd" id="1_l0vvx"]
+
+[node name="movement_test" type="Node2D"]
+script = ExtResource("1_l0vvx")

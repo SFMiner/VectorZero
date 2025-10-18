@@ -1,0 +1,75 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmm3s1yrqbsp7"]
+
+[ext_resource type="PackedScene" uid="uid://bci2vx3w703j7" path="res://scenes/components/grid.tscn" id="1_grid"]
+[ext_resource type="PackedScene" uid="uid://c06v2qj3g6vgy" path="res://scenes/player/player_point.tscn" id="2_player"]
+[ext_resource type="Script" uid="uid://b6snmniokaaih" path="res://scripts/grid/grid_pulse_manager.gd" id="3_pulse"]
+[ext_resource type="Script" path="res://scripts/ui/coordinate_display.gd" id="4_ui"]
+
+[node name="Stage01_ThePoint" type="Node2D"]
+
+[node name="Grid" parent="." instance=ExtResource("1_grid")]
+
+[node name="GridPulseManager" type="Node" parent="."]
+script = ExtResource("3_pulse")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 5.0
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+
+[node name="Environment" type="Node2D" parent="."]
+
+[node name="Walls" type="Node2D" parent="Environment"]
+
+[node name="MazeGeometry" type="Node2D" parent="Environment"]
+
+[node name="VisualElements" type="Node2D" parent="Environment"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CoordinateDisplay" type="Label" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 60.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "(0.00, 0.00)"
+horizontal_alignment = 2
+script = ExtResource("4_ui")
+
+[node name="HUD" type="VBoxContainer" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -100.0
+offset_right = 300.0
+offset_bottom = -20.0
+grow_vertical = 0
+
+[node name="StageTitle" type="Label" parent="CanvasLayer/UI/HUD"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 1, 0.7)
+theme_override_font_sizes/font_size = 20
+text = "Stage 1: The Point"
+
+[node name="DialogueTriggers" type="Node2D" parent="."]
+
+[connection signal="position_changed" from="Player" to="Camera2D" method="set_global_position"]

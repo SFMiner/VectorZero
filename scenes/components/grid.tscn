@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://bci2vx3w703j7"]
+
+[ext_resource type="Script" uid="uid://b6snmniokaaih" path="res://scripts/grid/grid_renderer.gd" id="1_v4w5k"]
+[ext_resource type="Shader" uid="uid://b2wnnkm0ycurk" path="res://shaders/infinite_grid.gdshader" id="2_u1j2a"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oplid"]
+shader = ExtResource("2_u1j2a")
+shader_parameter/grid_offset = Vector2(0, 0)
+shader_parameter/minor_spacing = 50.0
+shader_parameter/major_spacing = 250.0
+shader_parameter/grid_color = Color(0.102, 0.227, 0.29, 0.3)
+shader_parameter/major_color = Color(0.102, 0.227, 0.29, 0.5)
+shader_parameter/line_width = 1.0
+shader_parameter/major_line_width = 2.0
+shader_parameter/pulse_position = Vector2(0, 0)
+shader_parameter/pulse_strength = 0.0
+shader_parameter/pulse_radius = 100.0
+shader_parameter/player_position = Vector2(0, 0)
+shader_parameter/player_glow_radius = 50.0
+shader_parameter/player_glow_strength = 0.5
+
+[node name="Grid" type="Node2D"]
+script = ExtResource("1_v4w5k")
+
+[node name="GridRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_oplid")
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
