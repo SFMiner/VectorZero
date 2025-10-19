@@ -40,6 +40,7 @@ func _ready() -> void:
 	super._ready()
 	current_form = "angle"
 	_initialize_vertices()
+	
 
 func _initialize_vertices() -> void:
 	# Vector Zero at apex (cyan)

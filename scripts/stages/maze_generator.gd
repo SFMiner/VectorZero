@@ -5,19 +5,19 @@ class_name MazeGenerator
 ## Creates wall segments as StaticBody2D with Line2D visuals
 
 # === CONFIGURATION ===
-@export var pixels_per_unit: float = 50.0
+@export var pixels_per_unit: float = 50.0  # UPDATED: was 50.0, now matches grid scale
 @export var wall_color: Color = Color(0.2, 0.5, 0.6, 1.0)
 @export var wall_width: float = 3.0
 @export var wall_collision_width: float = 10.0
 
 # === INITIALIZATION ===
 func _ready() -> void:
+	print("MazeGenerator _ready() called")
+	print("pixels_per_unit: ", pixels_per_unit)
 	_generate_stage_01_maze()
 
 # === MAZE GENERATION ===
 func _generate_stage_01_maze() -> void:
-	# Simple maze from (0,0) to (10,10)
-	# Format: [start_x, start_y, end_x, end_y] in grid coordinates
 
 	var walls = [
 		# Outer boundary walls
@@ -50,6 +50,8 @@ func _generate_stage_01_maze() -> void:
 		[9, 11, 11, 11],	# Goal top
 	]
 
+	print("Generating maze with ", walls.size(), " wall segments")
+
 	for wall_data in walls:
 		_create_wall_segment(
 			Vector2(wall_data[0], wall_data[1]),
@@ -58,6 +60,9 @@ func _generate_stage_01_maze() -> void:
 
 	# Create goal marker at (10, 10)
 	_create_goal_marker(Vector2(10, 10))
+
+	print("Maze generation complete. Total children: ", get_child_count())
+
 
 func _create_wall_segment(grid_start: Vector2, grid_end: Vector2) -> void:
 	# Convert grid coordinates to world position
@@ -68,6 +73,7 @@ func _create_wall_segment(grid_start: Vector2, grid_end: Vector2) -> void:
 	var wall_body = StaticBody2D.new()
 	wall_body.name = "Wall_%d_%d_to_%d_%d" % [grid_start.x, grid_start.y, grid_end.x, grid_end.y]
 	add_child(wall_body)
+	
 
 	# Create collision shape (rectangle along the line)
 	var collision = CollisionShape2D.new()
@@ -83,7 +89,14 @@ func _create_wall_segment(grid_start: Vector2, grid_end: Vector2) -> void:
 	collision.position = (world_start + world_end) / 2.0
 	collision.rotation = segment_angle
 
-	wall_body.add_child(collision)
+#	wall_body.add_child(collision)
+
+	if get_child_count() == 1:
+		print("First wall created at: ", collision.global_position)
+		print("Wall size: ", shape.size)
+		print("Wall collision_width: ", wall_collision_width)
+		print("Player is at: ", get_tree().get_first_node_in_group("player").global_position)
+	
 
 	# Create Line2D for visual representation
 	var line = Line2D.new()

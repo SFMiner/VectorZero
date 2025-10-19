@@ -22,21 +22,29 @@ corner_radius_bottom_left = 8
 
 [node name="Stage01_ThePoint" type="Node2D"]
 
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -2
+offset_left = -589.0
+offset_top = -337.0
+offset_right = 1486.0
+offset_bottom = 1219.0
+
 [node name="StageManager" type="Node" parent="."]
 script = ExtResource("7_manager")
 dialogue_display_path = NodePath("../CanvasLayer/DialogueDisplay")
 dialogue_triggers_parent_path = NodePath("../DialogueTriggers")
 player_path = NodePath("../Player")
 
-[node name="Grid" parent="." instance=ExtResource("1_grid")]
+[node name="Player" parent="." instance=ExtResource("2_player")]
 
-[node name="GridPulseManager" type="Node" parent="."]
+[node name="Grid" parent="Player" instance=ExtResource("1_grid")]
+z_index = -1
+position = Vector2(-575, -325)
+
+[node name="GridPulseManager" type="Node" parent="Player"]
 script = ExtResource("3_5ihu6")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position_smoothing_enabled = true
-
-[node name="Player" parent="." instance=ExtResource("2_player")]
+[node name="Camera2D" type="Camera2D" parent="Player"]
 
 [node name="Environment" type="Node2D" parent="."]
 
@@ -80,9 +88,9 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 20.0
-offset_top = -100.0
+offset_top = -624.0
 offset_right = 300.0
-offset_bottom = -20.0
+offset_bottom = -544.0
 grow_vertical = 0
 
 [node name="StageTitle" type="Label" parent="CanvasLayer/UI/HUD"]
@@ -131,4 +139,4 @@ autowrap_mode = 3
 
 [node name="DialogueTriggers" type="Node2D" parent="."]
 
-[connection signal="position_changed" from="Player" to="Camera2D" method="set_global_position"]
+[connection signal="position_changed" from="Player" to="Player/Camera2D" method="set_global_position"]

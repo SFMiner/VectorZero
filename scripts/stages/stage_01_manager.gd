@@ -8,7 +8,7 @@ class_name Stage01Manager
 @export var dialogue_display_path: NodePath
 @export var dialogue_triggers_parent_path: NodePath
 @export var player_path: NodePath
-@export var pixels_per_unit: float = 50.0
+@export var pixels_per_unit: float = 500.0
 
 # === REFERENCES ===
 var dialogue_display: DialogueDisplay

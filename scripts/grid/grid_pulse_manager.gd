@@ -9,7 +9,7 @@ class_name GridPulseManager
 @export var pulse_threshold: float = 0.05  # How close to integer before pulse
 @export var pulse_strength: float = 0.8
 @export var pulse_radius: float = 150.0
-@export var pixels_per_unit: float = 50.0
+@export var pixels_per_unit: float = 500.0  # UPDATED: was 50.0, now matches grid scale
 
 # === REFERENCES ===
 var player: Node2D

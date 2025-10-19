@@ -1,29 +1,34 @@
 shader_type canvas_item;
+
 // === UNIFORMS ===
 uniform vec2 grid_offset = vec2(0.0, 0.0);  // Camera/player position
-uniform float minor_spacing = 500.0;         // pixels per unit
-uniform float major_spacing = 2500.0;        // 5 units = 2500 pixels
+uniform float minor_spacing = 50.0;          // 1 unit = 50 pixels
+uniform float major_spacing = 250.0;         // 5 units = 250 pixels
 uniform vec4 grid_color : source_color = vec4(0.102, 0.227, 0.290, 0.3);  // #1a3a4a with alpha
 uniform vec4 major_color : source_color = vec4(0.102, 0.227, 0.290, 0.5); // Brighter for major lines
 uniform float line_width = 1.0;
 uniform float major_line_width = 2.0;
-uniform vec2 viewport_size = vec2(1920.0, 1080.0);  // Screen resolution for aspect ratio
+
 // Pulse effect uniforms
 uniform vec2 pulse_position = vec2(0.0, 0.0);  // Where the pulse is centered
 uniform float pulse_strength = 0.0;             // 0.0 to 1.0
 uniform float pulse_radius = 100.0;             // How far the pulse extends
+
 // Player proximity glow
 uniform vec2 player_position = vec2(0.0, 0.0);
 uniform float player_glow_radius = 50.0;
 uniform float player_glow_strength = 0.5;
+
 // === FUNCTIONS ===
-// Draw a single gridline
+
+// Draw a single gridline - FIXED VERSION with uniform line widths
 float gridLine(vec2 coord, float spacing, float width) {
 	// Calculate grid coordinates
 	vec2 grid = abs(fract(coord / spacing - 0.5) - 0.5);
 	
-	// Use fwidth for proper derivatives
-	vec2 derivative = fwidth(coord / spacing);
+	// FIXED: Use a constant derivative instead of fwidth for uniform line widths
+	// This ensures horizontal and vertical lines have the same visual thickness
+	vec2 derivative = vec2(1.0) / spacing;
 	grid = grid / derivative;
 	
 	// Take the minimum (closest line in either direction)
@@ -32,18 +37,21 @@ float gridLine(vec2 coord, float spacing, float width) {
 	// Convert to alpha value with antialiasing
 	return 1.0 - min(line / width, 1.0);
 }
+
 // Calculate pulse effect
 float calculatePulse(vec2 world_pos) {
 	float dist = distance(world_pos, pulse_position);
 	float pulse = 1.0 - smoothstep(0.0, pulse_radius, dist);
 	return pulse * pulse_strength;
 }
+
 // Calculate player proximity glow
 float calculatePlayerGlow(vec2 world_pos) {
 	float dist = distance(world_pos, player_position);
 	float glow = 1.0 - smoothstep(0.0, player_glow_radius, dist);
 	return glow * player_glow_strength;
 }
+
 // Check if we're at an integer coordinate (with tolerance)
 float integerCoordinateGlow(vec2 world_pos, float spacing) {
 	vec2 grid_coord = world_pos / spacing;
@@ -56,21 +64,11 @@ float integerCoordinateGlow(vec2 world_pos, float spacing) {
 	
 	return max(glow_x, glow_y) * 0.3;  // 30% brightness boost
 }
+
 // === FRAGMENT SHADER ===
 void fragment() {
-	// THE REAL FIX: Scale each axis by its OWN dimension to get proper pixel coords
-	// But we want 1 world unit = 1 pixel in BOTH directions
-	// So we need to adjust one axis to compensate for aspect ratio
-	
-	// Option: Scale Y to match X's pixel density
-	vec2 world_pos;
-	world_pos.x = UV.x * viewport_size.x;  // X in pixels: 0 to 1152
-	world_pos.y = UV.y * viewport_size.x;  // Y ALSO scaled by viewport.x: 0 to 1152
-	
-	// Now both axes use the same scale (viewport.x)
-	// This creates a square coordinate space
-	
-	world_pos += grid_offset;
+	// Calculate world position
+	vec2 world_pos = UV * 10000.0 - 5000.0 + grid_offset;  // Center on screen
 	
 	// Draw minor gridlines
 	float minor_grid = gridLine(world_pos, minor_spacing, line_width);
@@ -102,4 +100,3 @@ void fragment() {
 	
 	COLOR = final_color;
 }
-

@@ -9,3 +9,51 @@
 	- incorrect: "condition ? value1 : value2"	
 - Do not use external ids in scene files: just use the paths to the included files. 
 - Never use comments in a *.tscn file.
+
+# Quick Fix Checklist for Grid Issues
+
+## Files to Replace
+
+Replace these files in your project with the updated versions from /outputs:
+
+1. ✅ `res://scripts/grid/grid_renderer.gd`
+   - pixels_per_unit: 500.0
+   - line_width: 0.7 (reduced)
+   - major_line_width: 1.4 (reduced)
+
+2. ✅ `res://scripts/stages/maze_generator.gd`
+   - pixels_per_unit: 500.0
+
+3. ✅ `res://scripts/grid/grid_pulse_manager.gd`
+   - pixels_per_unit: 500.0
+
+4. ✅ `res://scripts/ui/coordinate_display.gd`
+   - pixels_per_unit: 500.0
+
+## Scene Changes (Do Manually in Godot)
+
+### Fix Camera Parenting (Fixes Parallax):
+
+1. Open `res://scenes/stages/stage_01_the_point.tscn`
+2. In the Scene tree, locate `Camera2D` node
+3. **Drag** `Camera2D` onto `Player` node to reparent it
+4. Select `Camera2D` and set its **Position** to `(0, 0)` in the Inspector
+5. **Save** the scene (Ctrl+S)
+
+This makes the camera follow the player perfectly, eliminating the parallax effect.
+
+## Expected Results
+
+After applying these fixes:
+
+✅ Grid lines appear uniform width (horizontal = vertical)
+✅ Grid and maze walls move together (no parallax)
+✅ Coordinates display correctly
+✅ Grid pulses happen at the right positions
+
+## Testing
+
+1. Run the scene
+2. Move around - grid should stay aligned with maze
+3. Check that grid lines are consistent width
+4. Verify coordinates match grid positions

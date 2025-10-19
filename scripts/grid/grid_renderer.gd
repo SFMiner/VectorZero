@@ -2,9 +2,9 @@ extends Node2D
 class_name GridRenderer
 
 # === CONFIGURATION ===
-@export var pixels_per_unit: float = 50.0  # 1 game unit = 50 pixels
+@export var pixels_per_unit: float = 500.0  # Updated to match your settings
 @export var grid_color: Color = Color(0.102, 0.227, 0.290, 0.3)  # #1a3a4a
-@export var follow_camera: bool = true
+@export var follow_camera: bool = true  # Keep this true
 
 # === REFERENCES ===
 @onready var shader_material: ShaderMaterial = $GridRect.material
@@ -28,6 +28,9 @@ func _ready() -> void:
 	
 	# Set up the ColorRect to cover screen
 	_setup_rect()
+	
+	# Update viewport size for proper aspect ratio
+	_update_viewport_size()
 
 func _find_camera() -> void:
 	# Look for Camera2D in scene
@@ -62,8 +65,21 @@ func _setup_rect() -> void:
 		rect.set_anchors_preset(Control.PRESET_FULL_RECT)
 		rect.size = get_viewport_rect().size
 
+func _update_viewport_size() -> void:
+	if not shader_material:
+		return
+	
+	var viewport_size = get_viewport_rect().size
+	print("Setting viewport_size to: ", viewport_size)
+	shader_material.set_shader_parameter("viewport_size", viewport_size)
+	
+	# Debug: verify it was set
+	var set_value = shader_material.get_shader_parameter("viewport_size")
+	print("Verified viewport_size is: ", set_value)
+
 # === PROCESS ===
 func _process(delta: float) -> void:
+	_update_viewport_size()  # Update every frame for debugging
 	_update_shader_parameters()
 	_update_pulse_decay(delta)
 
@@ -71,15 +87,15 @@ func _update_shader_parameters() -> void:
 	if not shader_material:
 		return
 	
-	# Update grid offset to follow camera
 	if camera and follow_camera:
-		var cam_pos = camera.get_screen_center_position()
-		shader_material.set_shader_parameter("grid_offset", cam_pos)
+		# Use camera position, not player position!
+		var offset = camera.get_screen_center_position() * Vector2(8.67, 9.08)
+		shader_material.set_shader_parameter("grid_offset", offset)
 	
-	# Update player position for glow effect
 	if player:
 		shader_material.set_shader_parameter("player_position", player.global_position)
-
+		
+		
 func _update_pulse_decay(delta: float) -> void:
 	if pulse_decay_timer > 0.0:
 		pulse_decay_timer -= delta
@@ -99,6 +115,7 @@ func trigger_pulse(world_pos: Vector2, strength: float = 0.8, radius: float = 15
 	if not shader_material:
 		return
 	
+	# Use world position directly
 	shader_material.set_shader_parameter("pulse_position", world_pos)
 	shader_material.set_shader_parameter("pulse_strength", strength)
 	shader_material.set_shader_parameter("pulse_radius", radius)
