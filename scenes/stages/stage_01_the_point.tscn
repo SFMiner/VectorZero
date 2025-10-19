@@ -1,20 +1,40 @@
-[gd_scene load_steps=5 format=3 uid="uid://cmm3s1yrqbsp7"]
+[gd_scene load_steps=9 format=3 uid="uid://cmm3s1yrqbsp7"]
 
 [ext_resource type="PackedScene" uid="uid://bci2vx3w703j7" path="res://scenes/components/grid.tscn" id="1_grid"]
 [ext_resource type="PackedScene" uid="uid://c06v2qj3g6vgy" path="res://scenes/player/player_point.tscn" id="2_player"]
-[ext_resource type="Script" uid="uid://b6snmniokaaih" path="res://scripts/grid/grid_pulse_manager.gd" id="3_pulse"]
-[ext_resource type="Script" path="res://scripts/ui/coordinate_display.gd" id="4_ui"]
+[ext_resource type="Script" uid="uid://dfm63nweex32o" path="res://scripts/grid/grid_pulse_manager.gd" id="3_5ihu6"]
+[ext_resource type="Script" uid="uid://dmtp6tycc2mj4" path="res://scripts/ui/coordinate_display.gd" id="4_ui"]
+[ext_resource type="Script" uid="uid://cxmqpww5q7jvb" path="res://scripts/stages/maze_generator.gd" id="5_maze"]
+[ext_resource type="Script" uid="uid://bjxivfo5dnt6s" path="res://scripts/ui/dialogue_display.gd" id="6_dialogue"]
+[ext_resource type="Script" uid="uid://jilqhwumqsok" path="res://scripts/stages/stage_01_manager.gd" id="7_manager"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialogue"]
+bg_color = Color(0.05, 0.1, 0.15, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 1, 1, 0.5)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="Stage01_ThePoint" type="Node2D"]
+
+[node name="StageManager" type="Node" parent="."]
+script = ExtResource("7_manager")
+dialogue_display_path = NodePath("../CanvasLayer/DialogueDisplay")
+dialogue_triggers_parent_path = NodePath("../DialogueTriggers")
+player_path = NodePath("../Player")
 
 [node name="Grid" parent="." instance=ExtResource("1_grid")]
 
 [node name="GridPulseManager" type="Node" parent="."]
-script = ExtResource("3_pulse")
+script = ExtResource("3_5ihu6")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true
-position_smoothing_speed = 5.0
 
 [node name="Player" parent="." instance=ExtResource("2_player")]
 
@@ -23,6 +43,7 @@ position_smoothing_speed = 5.0
 [node name="Walls" type="Node2D" parent="Environment"]
 
 [node name="MazeGeometry" type="Node2D" parent="Environment"]
+script = ExtResource("5_maze")
 
 [node name="VisualElements" type="Node2D" parent="Environment"]
 
@@ -69,6 +90,44 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 1, 0.7)
 theme_override_font_sizes/font_size = 20
 text = "Stage 1: The Point"
+
+[node name="DialogueDisplay" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -180.0
+offset_right = 400.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue")
+script = ExtResource("6_dialogue")
+
+[node name="Margin" type="MarginContainer" parent="CanvasLayer/DialogueDisplay"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/DialogueDisplay/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CharacterName" type="Label" parent="CanvasLayer/DialogueDisplay/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "Vector Zero"
+
+[node name="DialogueText" type="Label" parent="CanvasLayer/DialogueDisplay/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "I am... here."
+autowrap_mode = 3
 
 [node name="DialogueTriggers" type="Node2D" parent="."]
 

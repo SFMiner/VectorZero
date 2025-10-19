@@ -1,25 +1,29 @@
 [gd_scene load_steps=2 format=3 uid="uid://dix180w2w1w2w"]
 
-[ext_resource type="Script" path="res://scripts/player/angle_controller.gd" id="1_vj1vj"]
+[ext_resource type="Script" uid="uid://266gr3ct35sl" path="res://scripts/player/angle_controller.gd" id="1_vj1vj"]
 
 [node name="PlayerAngle" type="CharacterBody2D"]
+scale = Vector2(0.10172673, 0.10783632)
 script = ExtResource("1_vj1vj")
 
 [node name="VertexZero" type="Node2D" parent="."]
 
 [node name="Sprite" type="Polygon2D" parent="VertexZero"]
+scale = Vector2(0.10172673, 0.10783632)
 color = Color(0, 1, 1, 1)
 polygon = PackedVector2Array(-5, -5, 5, -5, 5, 5, -5, 5)
 
 [node name="VertexEcho" type="Node2D" parent="."]
 
 [node name="Sprite" type="Polygon2D" parent="VertexEcho"]
+scale = Vector2(0.10172673, 0.10783632)
 color = Color(1, 0, 1, 1)
 polygon = PackedVector2Array(-5, -5, 5, -5, 5, 5, -5, 5)
 
 [node name="VertexAxiom" type="Node2D" parent="."]
 
 [node name="Sprite" type="Polygon2D" parent="VertexAxiom"]
+scale = Vector2(0.10172673, 0.10783632)
 color = Color(1, 1, 0, 1)
 polygon = PackedVector2Array(-5, -5, 5, -5, 5, 5, -5, 5)
 

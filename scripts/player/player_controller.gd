@@ -51,14 +51,21 @@ func _handle_movement(_delta: float) -> void:
 func _update_trail() -> void:
 	if not trail or not trail_enabled:
 		return
-	
-	# Add current position to trail
-	trail.add_point(global_position)
-	
+
+	# Add current position to trail (always at local origin)
+	trail.add_point(Vector2.ZERO)
+
 	# Limit trail length
 	if trail.get_point_count() > 50:
 		trail.remove_point(0)
-	
+
+	# Update all existing points to shift them in local space as player moves
+	# This creates the trailing effect - older points stay in world space but shift back in local space
+	for i in range(trail.get_point_count() - 1):
+		var point = trail.get_point_position(i)
+		# Shift point backward relative to player's velocity
+		trail.set_point_position(i, point - velocity * get_physics_process_delta_time())
+
 	# Fade trail over time
 	var alpha_gradient = Gradient.new()
 	alpha_gradient.add_point(0.0, Color(player_color, 0.0))
