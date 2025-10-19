@@ -98,7 +98,7 @@ func _process(_delta: float) -> void:
 func _update_visuals() -> void:
 	if sprite:
 		# Scale slightly during dash
-		var target_scale = 0.3 if is_dashing else 0.1
+		var target_scale = 0.4 if is_dashing else 0.2
 		sprite.scale = sprite.scale.lerp(Vector2.ONE * target_scale, 0.1)
 		
 		# Glow more during dash

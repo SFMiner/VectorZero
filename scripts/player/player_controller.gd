@@ -32,6 +32,7 @@ var pixels_per_unit: float = 50.0  # Match grid
 # === INITIALIZATION ===
 func _ready() -> void:
 	add_to_group("player")
+	print(get_tree().get_nodes_in_group("player"))
 	_setup_visuals()
 
 func _setup_visuals() -> void:

@@ -1,0 +1,208 @@
+[gd_scene load_steps=11 format=3 uid="uid://cd62nmapbeg6e"]
+
+[ext_resource type="Script" uid="uid://jilqhwumqsok" path="res://scripts/stages/stage_01_manager.gd" id="1_xtjdy"]
+[ext_resource type="PackedScene" uid="uid://c06v2qj3g6vgy" path="res://scenes/player/player_point.tscn" id="2_nweaq"]
+[ext_resource type="Script" uid="uid://cn4uty3ljr3f3" path="res://scripts/grid/x_axis.gd" id="2_snueb"]
+[ext_resource type="Script" uid="uid://c48fx02ngnn7d" path="res://scripts/grid/y_axis.gd" id="3_gmbtp"]
+[ext_resource type="PackedScene" uid="uid://bci2vx3w703j7" path="res://scenes/components/grid.tscn" id="3_snueb"]
+[ext_resource type="Script" uid="uid://dfm63nweex32o" path="res://scripts/grid/grid_pulse_manager.gd" id="4_gmbtp"]
+[ext_resource type="Script" uid="uid://ck6pyh66mnqie" path="res://scenes/tools/create_wall_collisions.gd" id="5_xtjdy"]
+[ext_resource type="Script" uid="uid://dmtp6tycc2mj4" path="res://scripts/ui/coordinate_display.gd" id="6_suups"]
+[ext_resource type="Script" uid="uid://bjxivfo5dnt6s" path="res://scripts/ui/dialogue_display.gd" id="9_snueb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialogue"]
+bg_color = Color(0.05, 0.1, 0.15, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 1, 1, 0.5)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="Stage01_ThePoint" type="Node2D"]
+position = Vector2(-577, -323)
+
+[node name="StageManager" type="Node" parent="."]
+script = ExtResource("1_xtjdy")
+dialogue_display_path = NodePath("../CanvasLayer/DialogueDisplay")
+dialogue_triggers_parent_path = NodePath("../DialogueTriggers")
+player_path = NodePath("../Player")
+
+[node name="XAxis" type="Line2D" parent="."]
+z_index = 4
+position = Vector2(603, 323)
+points = PackedVector2Array(-632, 0, 575, 0)
+width = 2.0
+default_color = Color(0, 0, 0, 1)
+script = ExtResource("2_snueb")
+
+[node name="YAxis" type="Line2D" parent="."]
+z_index = 4
+position = Vector2(336, 323)
+points = PackedVector2Array(241, -339, 241, 350)
+width = 2.0
+default_color = Color(0, 0, 0, 1)
+script = ExtResource("3_gmbtp")
+
+[node name="Player" parent="." instance=ExtResource("2_nweaq")]
+z_index = 4
+position = Vector2(577, 323)
+
+[node name="Background" type="ColorRect" parent="Player"]
+z_index = -2
+offset_left = -587.0
+offset_top = -339.0
+offset_right = 594.0
+offset_bottom = 348.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Grid" parent="Player" instance=ExtResource("3_snueb")]
+z_index = -1
+position = Vector2(-576, -330)
+
+[node name="GridPulseManager" type="Node" parent="Player"]
+script = ExtResource("4_gmbtp")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="Environment" type="Node2D" parent="."]
+
+[node name="Walls" type="Node2D" parent="Environment"]
+z_index = 5
+position = Vector2(577, 323)
+script = ExtResource("5_xtjdy")
+
+[node name="Line2D" type="Line2D" parent="Environment/Walls"]
+position = Vector2(-43, -55)
+points = PackedVector2Array(-16, 0, 575, 0)
+width = 3.0
+default_color = Color(0.6007159, 0.42106432, 1, 1)
+
+[node name="Line2D2" type="Line2D" parent="Environment/Walls"]
+position = Vector2(231, -53)
+points = PackedVector2Array(0, 0, 0, 154)
+width = 3.0
+default_color = Color(0.6007159, 0.42106432, 1, 1)
+
+[node name="Line2D6" type="Line2D" parent="Environment/Walls"]
+position = Vector2(173, -27)
+points = PackedVector2Array(0, 28, 0, 83)
+width = 3.0
+default_color = Color(0.6007159, 0.42106432, 1, 1)
+
+[node name="Line2D3" type="Line2D" parent="Environment/Walls"]
+position = Vector2(-37, -68)
+points = PackedVector2Array(-20, 123, 212, 123)
+width = 3.0
+default_color = Color(0.6007159, 0.42106432, 1, 1)
+
+[node name="Line2D4" type="Line2D" parent="Environment/Walls"]
+position = Vector2(-38, -68)
+points = PackedVector2Array(96, 123, 96, 41)
+width = 3.0
+default_color = Color(0.6007159, 0.42106432, 1, 1)
+
+[node name="Line2D5" type="Line2D" parent="Environment/Walls"]
+position = Vector2(115, -54)
+points = PackedVector2Array(0, 0, 0, 54)
+width = 3.0
+default_color = Color(0.6007159, 0.42106432, 1, 1)
+
+[node name="Line2D7" type="Line2D" parent="Environment/Walls"]
+position = Vector2(-58, -54)
+points = PackedVector2Array(0, 0, 0, 110)
+width = 3.0
+default_color = Color(0.6007159, 0.42106432, 1, 1)
+
+[node name="MazeGeometry" type="Node2D" parent="Environment"]
+
+[node name="VisualElements" type="Node2D" parent="Environment"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CoordinateDisplay" type="Label" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 60.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "(0.00, 0.00)"
+horizontal_alignment = 2
+script = ExtResource("6_suups")
+
+[node name="HUD" type="VBoxContainer" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = -627.0
+offset_right = 308.0
+offset_bottom = -547.0
+grow_vertical = 0
+
+[node name="StageTitle" type="Label" parent="CanvasLayer/UI/HUD"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 1, 0.7)
+theme_override_font_sizes/font_size = 20
+text = "Stage 1: The Point"
+
+[node name="DialogueDisplay" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -180.0
+offset_right = 400.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue")
+script = ExtResource("9_snueb")
+
+[node name="Margin" type="MarginContainer" parent="CanvasLayer/DialogueDisplay"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/DialogueDisplay/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CharacterName" type="Label" parent="CanvasLayer/DialogueDisplay/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "Vector Zero"
+
+[node name="DialogueText" type="Label" parent="CanvasLayer/DialogueDisplay/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "I am... here."
+autowrap_mode = 3
+
+[node name="DialogueTriggers" type="Node2D" parent="."]
+
+[connection signal="position_changed" from="Player" to="Player/Camera2D" method="set_global_position"]

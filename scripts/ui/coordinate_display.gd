@@ -42,8 +42,8 @@ func _update_display() -> void:
 	
 	var grid_pos = player.global_position / pixels_per_unit
 	
-	var x_str = _format_number(grid_pos.x)
-	var y_str = _format_number(grid_pos.y)
+	var x_str = _format_number(grid_pos.x)# / 1.15366666667)
+	var y_str = _format_number(grid_pos.y)# / 1.10166666667)
 	
 	text = "(%s, %s)" % [x_str, y_str]
 

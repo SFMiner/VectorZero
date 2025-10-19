@@ -23,7 +23,7 @@ Gridlines made by infinite_grid.gdshader were malformed, stretched to match disp
    - pixels_per_unit: 500.0
    - line_width: 0.7 (reduced)
    - major_line_width: 1.4 (reduced)
-   - make offset match player movement: Vctor2(8.67, 9.08)
+   - make offset match player movement: Vector2(8.67, 9.08)
 		func _update_shader_parameters() -> void:
 			# ...
 			if camera and follow_camera:
