@@ -28,6 +28,7 @@ signal transformation_requested(new_form: String)
 # === STATE ===
 var current_form: String = "point"
 var pixels_per_unit: float = 50.0  # Match grid
+var is_immobile : bool = false
 
 # === INITIALIZATION ===
 func _ready() -> void:
@@ -38,6 +39,12 @@ func _ready() -> void:
 func _setup_visuals() -> void:
 	if sprite:
 		sprite.modulate = player_color
+
+func freeze() -> void:
+	is_immobile = true
+
+func set_free() -> void:
+	is_immobile = false
 
 # === PHYSICS ===
 func _physics_process(delta: float) -> void:

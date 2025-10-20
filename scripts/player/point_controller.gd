@@ -8,6 +8,7 @@ class_name PointController
 @export var dash_speed: float = 400.0
 @export var dash_duration: float = 0.2
 @export var dash_cooldown: float = 0.5
+@onready var label: Label = $Label
 
 # === STATE ===
 var is_dashing: bool = false
@@ -20,7 +21,8 @@ var dash_cooldown_timer: float = 0.0
 func _ready() -> void:
 	super._ready()
 	current_form = "point"
-
+	#label.text = str(is_immobile)
+	
 # === INPUT ===
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("dash") and can_dash:
@@ -28,11 +30,14 @@ func _unhandled_input(event: InputEvent) -> void:
 
 # === MOVEMENT ===
 func _handle_movement(delta: float) -> void:
+	if is_immobile: 
+		return
+
 	if is_dashing:
 		_handle_dash(delta)
 	else:
 		_handle_normal_movement(delta)
-	
+
 	# Update cooldown
 	if not can_dash:
 		dash_cooldown_timer -= delta
@@ -95,6 +100,8 @@ func _play_dash_effect() -> void:
 # === VISUALS ===
 func _process(_delta: float) -> void:
 	_update_visuals()
+	#label.text = str(is_immobile)
+	
 
 func _update_visuals() -> void:
 	if sprite:

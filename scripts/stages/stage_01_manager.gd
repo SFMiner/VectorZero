@@ -47,6 +47,7 @@ var first_movement_triggered: bool = false
 ## Initializes all references and sets up the stage's dialogue system
 func _ready() -> void:
 	_get_references()
+	player.freeze()
 	_create_dialogue_triggers()
 	_connect_player_signals()
 
@@ -101,22 +102,27 @@ func _create_dialogue_triggers() -> void:
 
 	# === ORIGIN DIALOGUE (0, 0) ===
 	# First realization: Vector Zero becomes aware of their position
+	# Uses auto_trigger_delay to fire immediately on spawn
 	var origin_trigger = _create_trigger(
 		Vector2(0, 0),
 		30.0,
 		"Vector Zero",
 		"I am... here. Defined by my position."
 	)
+	origin_trigger.auto_trigger_delay = 0.5  # Trigger 0.5 seconds after scene loads
+	origin_trigger.max_activations = 1
 	dialogue_triggers_parent.add_child(origin_trigger)
 
 	# Second realization: Vector Zero feels limited, desires more
-	# Slightly larger radius so it triggers after the first
+	# Triggers shortly after the first dialogue
 	var origin_trigger_2 = _create_trigger(
 		Vector2(0, 0),
 		50.0,
 		"Vector Zero",
 		"But I feel... confined. There must be more."
 	)
+	origin_trigger_2.auto_trigger_delay = 3.5  # Trigger 3.5 seconds after scene loads
+	origin_trigger_2.max_activations = 1
 	dialogue_triggers_parent.add_child(origin_trigger_2)
 
 	# === INTEGER COORDINATE FEEDBACK ===
@@ -182,3 +188,7 @@ func _on_player_position_changed(new_position: Vector2) -> void:
 		first_movement_triggered = true
 		await get_tree().create_timer(0.5).timeout
 		_on_dialogue_triggered("Vector Zero", "I can move! I exist beyond this point!")
+
+
+func _on_immobility_timer_timeout() -> void:
+	player.set_free() # Replace with function body.

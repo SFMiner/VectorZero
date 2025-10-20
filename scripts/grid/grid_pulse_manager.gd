@@ -21,8 +21,8 @@ var last_grid_y: int = 0
 # === INITIALIZATION ===
 func _ready() -> void:
 	# Get references
-	if player_path:
-		player = get_node(player_path)
+	call_deferred("_find_player")
+	
 	if grid_renderer_path:
 		grid_renderer = get_node(grid_renderer_path)
 	
@@ -39,6 +39,14 @@ func _ready() -> void:
 	last_grid_x = int(round(grid_pos.x))
 	last_grid_y = int(round(grid_pos.y))
 
+func _find_player() -> void:
+	# Look for player node (should have group "player")
+	var players = get_tree().get_nodes_in_group("player")
+	if players.size() > 0:
+		player = players[0]
+	else:
+		push_warning("GridRenderer: No player found in 'player' group")
+		
 # === PROCESS ===
 func _process(_delta: float) -> void:
 	if not player or not grid_renderer:

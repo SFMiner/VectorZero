@@ -222,4 +222,10 @@ autowrap_mode = 3
 
 [node name="DialogueTriggers" type="Node2D" parent="."]
 
+[node name="ImmobilityTimer" type="Timer" parent="."]
+wait_time = 6.0
+one_shot = true
+autostart = true
+
 [connection signal="position_changed" from="Player" to="Player/Camera2D" method="set_global_position"]
+[connection signal="timeout" from="ImmobilityTimer" to="StageManager" method="_on_immobility_timer_timeout"]
