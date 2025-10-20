@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://c48fx02ngnn7d" path="res://scripts/grid/y_axis.gd" id="3_gmbtp"]
 [ext_resource type="PackedScene" uid="uid://bci2vx3w703j7" path="res://scenes/components/grid.tscn" id="3_snueb"]
 [ext_resource type="Script" uid="uid://dfm63nweex32o" path="res://scripts/grid/grid_pulse_manager.gd" id="4_gmbtp"]
-[ext_resource type="Script" uid="uid://ck6pyh66mnqie" path="res://scenes/tools/create_wall_collisions.gd" id="5_xtjdy"]
+[ext_resource type="Script" uid="uid://ck6pyh66mnqie" path="res://scripts/tools/create_wall_collisions.gd" id="5_xtjdy"]
 [ext_resource type="Script" uid="uid://dmtp6tycc2mj4" path="res://scripts/ui/coordinate_display.gd" id="6_suups"]
 [ext_resource type="Script" uid="uid://bjxivfo5dnt6s" path="res://scripts/ui/dialogue_display.gd" id="9_snueb"]
 
@@ -36,7 +36,6 @@ z_index = 4
 position = Vector2(603, 323)
 points = PackedVector2Array(-632, 0, 575, 0)
 width = 2.0
-default_color = Color(0, 0, 0, 1)
 script = ExtResource("2_snueb")
 
 [node name="YAxis" type="Line2D" parent="."]
@@ -44,7 +43,6 @@ z_index = 4
 position = Vector2(336, 323)
 points = PackedVector2Array(241, -339, 241, 350)
 width = 2.0
-default_color = Color(0, 0, 0, 1)
 script = ExtResource("3_gmbtp")
 
 [node name="Player" parent="." instance=ExtResource("2_nweaq")]
@@ -57,11 +55,14 @@ offset_left = -587.0
 offset_top = -339.0
 offset_right = 594.0
 offset_bottom = 348.0
+color = Color(0.16078432, 0.08627451, 0, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="Grid" parent="Player" instance=ExtResource("3_snueb")]
 z_index = -1
-position = Vector2(-576, -330)
+position = Vector2(-576, -324)
+grid_color = null
+follow_camera = null
 
 [node name="GridPulseManager" type="Node" parent="Player"]
 script = ExtResource("4_gmbtp")
@@ -74,46 +75,59 @@ script = ExtResource("4_gmbtp")
 z_index = 5
 position = Vector2(577, 323)
 script = ExtResource("5_xtjdy")
+wall_collision_width = 10.0
 
-[node name="Line2D" type="Line2D" parent="Environment/Walls"]
-position = Vector2(-43, -55)
-points = PackedVector2Array(-16, 0, 575, 0)
-width = 3.0
-default_color = Color(0.6007159, 0.42106432, 1, 1)
-
-[node name="Line2D2" type="Line2D" parent="Environment/Walls"]
-position = Vector2(231, -53)
-points = PackedVector2Array(0, 0, 0, 154)
-width = 3.0
-default_color = Color(0.6007159, 0.42106432, 1, 1)
-
-[node name="Line2D6" type="Line2D" parent="Environment/Walls"]
-position = Vector2(173, -27)
-points = PackedVector2Array(0, 28, 0, 83)
-width = 3.0
-default_color = Color(0.6007159, 0.42106432, 1, 1)
-
-[node name="Line2D3" type="Line2D" parent="Environment/Walls"]
-position = Vector2(-37, -68)
-points = PackedVector2Array(-20, 123, 212, 123)
+[node name="Line2D7" type="Line2D" parent="Environment/Walls"]
+position = Vector2(-50, -50)
+points = PackedVector2Array(0, 0, 0, 100)
 width = 3.0
 default_color = Color(0.6007159, 0.42106432, 1, 1)
 
 [node name="Line2D4" type="Line2D" parent="Environment/Walls"]
-position = Vector2(-38, -68)
-points = PackedVector2Array(96, 123, 96, 41)
+position = Vector2(0, 10)
+points = PackedVector2Array(0, 0, 0, 40)
 width = 3.0
 default_color = Color(0.6007159, 0.42106432, 1, 1)
 
-[node name="Line2D5" type="Line2D" parent="Environment/Walls"]
-position = Vector2(115, -54)
-points = PackedVector2Array(0, 0, 0, 54)
+[node name="Line2D8" type="Line2D" parent="Environment/Walls"]
+position = Vector2(50, -50)
+points = PackedVector2Array(0, 0, 0, 50)
 width = 3.0
 default_color = Color(0.6007159, 0.42106432, 1, 1)
 
-[node name="Line2D7" type="Line2D" parent="Environment/Walls"]
-position = Vector2(-58, -54)
-points = PackedVector2Array(0, 0, 0, 110)
+[node name="Line2D9" type="Line2D" parent="Environment/Walls"]
+position = Vector2(100, 0)
+points = PackedVector2Array(0, 0, 0, 50)
+width = 3.0
+default_color = Color(0.6007159, 0.42106432, 1, 1)
+
+[node name="Line2D10" type="Line2D" parent="Environment/Walls"]
+position = Vector2(150, -50)
+points = PackedVector2Array(0, 0, 0, 50)
+width = 3.0
+default_color = Color(0.6007159, 0.42106432, 1, 1)
+
+[node name="Line2D" type="Line2D" parent="Environment/Walls"]
+position = Vector2(-50, -50)
+points = PackedVector2Array(-1, 0, 575, 0)
+width = 3.0
+default_color = Color(0.6007159, 0.42106432, 1, 1)
+
+[node name="Line2D6" type="Line2D" parent="Environment/Walls"]
+position = Vector2(200, 0)
+points = PackedVector2Array(0, 0, 0, 100)
+width = 3.0
+default_color = Color(0.6007159, 0.42106432, 1, 1)
+
+[node name="Line2D2" type="Line2D" parent="Environment/Walls"]
+position = Vector2(250, -50)
+points = PackedVector2Array(0, 0, 0, 154)
+width = 3.0
+default_color = Color(0.6007159, 0.42106432, 1, 1)
+
+[node name="Line2D3" type="Line2D" parent="Environment/Walls"]
+position = Vector2(-50, 50)
+points = PackedVector2Array(0, 0, 250, 0)
 width = 3.0
 default_color = Color(0.6007159, 0.42106432, 1, 1)
 
@@ -147,6 +161,9 @@ theme_override_font_sizes/font_size = 24
 text = "(0.00, 0.00)"
 horizontal_alignment = 2
 script = ExtResource("6_suups")
+player_path = null
+update_rate = null
+decimal_places = null
 
 [node name="HUD" type="VBoxContainer" parent="CanvasLayer/UI"]
 layout_mode = 1

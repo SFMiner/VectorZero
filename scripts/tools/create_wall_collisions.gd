@@ -5,11 +5,17 @@ class_name ManualMazeLayout
 ## Manual maze layout system
 ## Place Line2D nodes as children, and this script automatically generates collision shapes
 ## Also supports ColorRect and other shapes
+##
+## IMPORTANT: Requires GameConstants autoload for coordinate system consistency
+## Make sure game_constants.gd is added to Project Settings → Autoload as "GameConstants"
 
 # === CONFIGURATION ===
 @export var auto_generate_on_ready: bool = true
-@export var wall_collision_width: float = 10.0
+@export var wall_collision_width: float = 3.0
 @export var parent_collisions_to_visuals: bool = true
+
+# Note: pixels_per_unit is now read from GameConstants.PIXELS_PER_UNIT
+# This ensures consistency across all coordinate conversions
 @export_group("Supported Node Types")
 @export var process_line2d: bool = true
 @export var process_color_rects: bool = true

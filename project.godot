@@ -15,6 +15,10 @@ run/main_scene="uid://c06v2qj3g6vgy"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GameConstants="*res://scripts/autoloads/game_constants.gd"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_mcp/plugin.cfg")

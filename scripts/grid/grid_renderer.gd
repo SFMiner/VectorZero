@@ -2,9 +2,8 @@ extends Node2D
 class_name GridRenderer
 
 # === CONFIGURATION ===
-@export var pixels_per_unit: float = 500.0  # Updated to match your settings
 @export var grid_color: Color = Color(0.102, 0.227, 0.290, 0.3)  # #1a3a4a
-@export var follow_camera: bool = true  # Keep this true
+@export var follow_camera: bool = true
 
 # === REFERENCES ===
 @onready var shader_material: ShaderMaterial = $GridRect.material
@@ -28,9 +27,6 @@ func _ready() -> void:
 	
 	# Set up the ColorRect to cover screen
 	_setup_rect()
-	
-	# Update viewport size for proper aspect ratio
-	_update_viewport_size()
 
 func _find_camera() -> void:
 	# Look for Camera2D in scene
@@ -51,9 +47,12 @@ func _initialize_shader() -> void:
 		push_error("GridRenderer: No shader material assigned")
 		return
 	
+	# Use the global constant for consistency
+	var ppu = GameConstants.PIXELS_PER_UNIT
+	
 	# Set initial shader parameters
-	shader_material.set_shader_parameter("minor_spacing", pixels_per_unit)
-	shader_material.set_shader_parameter("major_spacing", pixels_per_unit * 5.0)
+	shader_material.set_shader_parameter("minor_spacing", ppu)
+	shader_material.set_shader_parameter("major_spacing", ppu * 5.0)
 	shader_material.set_shader_parameter("grid_color", grid_color)
 	shader_material.set_shader_parameter("line_width", 1.0)
 	shader_material.set_shader_parameter("major_line_width", 2.0)
@@ -65,21 +64,8 @@ func _setup_rect() -> void:
 		rect.set_anchors_preset(Control.PRESET_FULL_RECT)
 		rect.size = get_viewport_rect().size
 
-func _update_viewport_size() -> void:
-	if not shader_material:
-		return
-	
-	var viewport_size = get_viewport_rect().size
-	print("Setting viewport_size to: ", viewport_size)
-	shader_material.set_shader_parameter("viewport_size", viewport_size)
-	
-	# Debug: verify it was set
-	var set_value = shader_material.get_shader_parameter("viewport_size")
-	print("Verified viewport_size is: ", set_value)
-
 # === PROCESS ===
 func _process(delta: float) -> void:
-	_update_viewport_size()  # Update every frame for debugging
 	_update_shader_parameters()
 	_update_pulse_decay(delta)
 
@@ -87,15 +73,21 @@ func _update_shader_parameters() -> void:
 	if not shader_material:
 		return
 	
+	# Update viewport size for proper aspect ratio handling
+	var viewport_size = get_viewport_rect().size
+	shader_material.set_shader_parameter("viewport_size", viewport_size)
+	
 	if camera and follow_camera:
-		# Use camera position, not player position!
-		var offset = camera.get_screen_center_position() * Vector2(8.67, 9.08)
+		# Use camera position directly - no magic multipliers needed
+		# The shader handles the coordinate space conversion
+		var offset = camera.get_screen_center_position()
+		print("Camera position: ", camera.get_screen_center_position(), " | Grid offset being set: ", offset)
 		shader_material.set_shader_parameter("grid_offset", offset)
+
 	
 	if player:
 		shader_material.set_shader_parameter("player_position", player.global_position)
-		
-		
+
 func _update_pulse_decay(delta: float) -> void:
 	if pulse_decay_timer > 0.0:
 		pulse_decay_timer -= delta
@@ -135,7 +127,6 @@ func set_grid_alpha(alpha: float) -> void:
 
 ## Set pixels per unit (for zooming effects)
 func set_pixels_per_unit(ppu: float) -> void:
-	pixels_per_unit = ppu
 	if shader_material:
 		shader_material.set_shader_parameter("minor_spacing", ppu)
 		shader_material.set_shader_parameter("major_spacing", ppu * 5.0)

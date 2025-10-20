@@ -51,6 +51,7 @@ func _handle_normal_movement(delta: float) -> void:
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
 	
 	move_and_slide()
+	print("Player global_position: ", global_position)
 
 func _handle_dash(delta: float) -> void:
 	dash_timer -= delta

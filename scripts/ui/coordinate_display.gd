@@ -7,7 +7,6 @@ class_name CoordinateDisplay
 @export var player_path: NodePath
 @export var update_rate: float = 0.016  # ~60 FPS
 @export var decimal_places: int = 2
-@export var pixels_per_unit: float = 50.0
 
 # === REFERENCES ===
 var player: PlayerController
@@ -40,10 +39,11 @@ func _update_display() -> void:
 	if not player:
 		return
 	
-	var grid_pos = player.global_position / pixels_per_unit
+	# Use the global constant for consistent coordinate conversion
+	var grid_pos = GameConstants.world_to_grid(player.global_position)
 	
-	var x_str = _format_number(grid_pos.x)# / 1.15366666667)
-	var y_str = _format_number(grid_pos.y)# / 1.10166666667)
+	var x_str = _format_number(grid_pos.x)
+	var y_str = _format_number(grid_pos.y)
 	
 	text = "(%s, %s)" % [x_str, y_str]
 
